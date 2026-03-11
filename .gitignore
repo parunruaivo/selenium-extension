@@ -43,3 +43,4 @@ bin
 .apt_generated
 .apt_generated_tests
 .factorypath
+.cursor

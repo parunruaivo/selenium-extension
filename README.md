@@ -1,4 +1,4 @@
-# Self-Healing Selenium Library
+# Selenium Extension library
 
 Implementation of the library using **testRigor** service.
 
@@ -7,16 +7,16 @@ There are two repositories, one using the selenium library version 3.x
 ```
 <dependency>
 	<groupId>com.testrigor</groupId>
-	<artifactId>self-healing-selenium-3</artifactId>
-	<version>0.1.1-SNAPSHOT</version>
+	<artifactId>selenium-extension-3</artifactId>
+	<version>0.2.0-SNAPSHOT</version>
 </dependency>
 ```
 and the other using the version 4.x
 ```
 <dependency>
 	<groupId>com.testrigor</groupId>
-	<artifactId>self-healing-selenium-4</artifactId>
-	<version>0.1.1-SNAPSHOT</version>
+	<artifactId>selenium-extension-4</artifactId>
+	<version>0.2.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -41,17 +41,17 @@ public void input_contains_value() {
     assertThat(element.getText()).contains("John");
 }
 ```
-we are going to pass the `RemoteWebDriver` to the self healing wrapper
+we are going to pass the `RemoteWebDriver` to the selenium extension wrapper
 ```
 @Test
 public void input_contains_value() {
     RemoteWebDriver driver = new ChromeDriver();
-    SelfHealingDriver selfHealingDriver = TestRigor.selfHeal(driver, "API_TOKEN");
-    selfHealingDriver.setTestCaseName("test"); //This needs to be configure for each @Test
+    TestrigorDriver extensionDriver = TestRigor.extendDriver(driver, "API_TOKEN");
+    extensionDriver.setTestCaseName("test"); //This needs to be configure for each @Test
     
     
     driver.get("some page");
-    WebElement element = selfHealingDriver.findElement(By.id("firstNameInput"));
+    WebElement element = extensionDriver.findElement(By.id("firstNameInput"));
     assertThat(element.getText()).contains("John");
 }
 ```
@@ -62,4 +62,4 @@ setTestCaseName(String testCaseName);
 on each `@Test` annotated method, this is for creating a relationship between the locators and the test.
 
 
-For more information go to https://testrigor.com/selenium-self-healing
+For more information go to https://testrigor.com/selenium-extension

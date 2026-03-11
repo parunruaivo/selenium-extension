@@ -2,8 +2,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.testrigor</groupId>
-	<artifactId>self-healing-selenium</artifactId>
-	<version>0.1.1-SNAPSHOT</version>
+	<artifactId>selenium-extension</artifactId>
+	<version>0.2.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<licenses>
@@ -62,13 +62,14 @@
 		<module>commons</module>
 		<module>selenium-3</module>
 		<module>selenium-4</module>
+		<module>manual-tests</module>
 	</modules>
 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>com.testrigor</groupId>
-				<artifactId>self-healing-selenium-commons</artifactId>
+				<artifactId>selenium-extension-commons</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -119,7 +120,7 @@
 			<dependency>
 				<groupId>org.projectlombok</groupId>
 				<artifactId>lombok</artifactId>
-				<version>1.18.22</version>
+				<version>1.18.30</version>
 				<optional>true</optional>
 			</dependency>
 			<dependency>
@@ -224,47 +225,9 @@
 		</dependencies>
 	</dependencyManagement>
 	<build>
-		<finalName>self-healing-selenium</finalName>
+		<finalName>selenium-extension</finalName>
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-pmd-plugin</artifactId>
-										<versionRange>[1.0,)</versionRange>
-										<goals>
-											<goal>check</goal>
-											<goal>cpd-check</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<execute/>
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>com.github.spotbugs</groupId>
-										<artifactId>spotbugs-maven-plugin</artifactId>
-										<versionRange>[1.0,)</versionRange>
-										<goals>
-											<goal>check</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<execute/>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
@@ -279,85 +242,6 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
 					<version>3.3.0</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-pmd-plugin</artifactId>
-					<version>${pmd-version}</version>
-					<configuration>
-						<linkXRef>false</linkXRef>
-						<sourceEncoding>UTF-8</sourceEncoding>
-						<minimumTokens>100</minimumTokens>
-						<printFailingErrors>true</printFailingErrors>
-						<verbose>true</verbose>
-						<targetJdk>${java.version}</targetJdk>
-						<analysisCache>true</analysisCache>
-						<analysisCacheLocation>${project.basedir}/.build-cache/pmd.cache</analysisCacheLocation>
-						<rulesets>
-							<ruleset>${project.basedir}/pmd_ruleset.xml</ruleset>
-						</rulesets>
-					</configuration>
-					<executions>
-						<execution>
-							<phase>compile</phase>
-							<goals>
-								<goal>check</goal>
-								<goal>cpd-check</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>com.github.spotbugs</groupId>
-					<artifactId>spotbugs-maven-plugin</artifactId>
-					<version>4.7.3.0</version>
-					<configuration>
-						<effort>Max</effort>
-						<threshold>Low</threshold>
-						<excludeFilterFile>findbugs-exclude.xml</excludeFilterFile>
-						<xmlOutput>true</xmlOutput>
-						<xmlOutputDirectory>${project.build.directory}/test-reports</xmlOutputDirectory>
-					</configuration>
-					<executions>
-						<execution>
-							<id>analyze-compile</id>
-							<phase>compile</phase>
-							<goals>
-								<goal>check</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-checkstyle-plugin</artifactId>
-					<version>3.1.2</version>
-					<configuration>
-						<encoding>UTF-8</encoding>
-						<consoleOutput>true</consoleOutput>
-						<failsOnError>true</failsOnError>
-						<linkXRef>false</linkXRef>
-						<configLocation>checkstyle_checks.xml</configLocation>
-						<includeTestSourceDirectory>true</includeTestSourceDirectory>
-						<cacheFile>${project.basedir}/.build-cache/checkstyle.cache</cacheFile>
-						<sourceDirectories>${project.build.sourceDirectory}</sourceDirectories>
-					</configuration>
-					<dependencies>
-						<dependency>
-							<groupId>com.puppycrawl.tools</groupId>
-							<artifactId>checkstyle</artifactId>
-							<version>8.44</version>
-						</dependency>
-					</dependencies>
-					<executions>
-						<execution>
-							<id>validate</id>
-							<phase>compile</phase>
-							<goals>
-								<goal>check</goal>
-							</goals>
-						</execution>
-					</executions>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>

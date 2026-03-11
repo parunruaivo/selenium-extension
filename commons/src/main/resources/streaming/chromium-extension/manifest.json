@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "testRigor Streaming Bridge",
+  "description": "Captures active tab and forwards WebRTC stream to test-flow-studio signaling endpoint.",
+  "version": "1.0.0",
+  "background": {
+    "service_worker": "service_worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content_bridge.js"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "permissions": [
+    "tabCapture",
+    "tabs",
+    "offscreen"
+  ],
+  "commands": {
+    "start-streaming": {
+      "suggested_key": { "default": "Ctrl+Shift+S" },
+      "description": "Start tab streaming (required for capture in automation)"
+    }
+  },
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "externally_connectable": {
+    "matches": [
+      "<all_urls>"
+    ]
+  }
+}

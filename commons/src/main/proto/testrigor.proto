@@ -1,0 +1,102 @@
+syntax = "proto3";
+
+package com.testrigor.seleniumextension.grpc.lib;
+
+option java_multiple_files = true;
+option java_package = "com.testrigor.seleniumextension.grpc.lib";
+option java_outer_classname = "TestRigorServiceProto";
+
+import "google/protobuf/any.proto";
+import "google/rpc/status.proto";
+
+service TestRigorService {
+  rpc findElement (stream ClientMessage) returns (stream ServerMessage) {
+  }
+  rpc executePrompt (stream ClientMessage) returns (stream ServerMessage) {
+  }
+  rpc executeAction (stream ClientMessage) returns (stream ServerMessage) {
+  }
+}
+
+message DriverCommand {
+  string sessionId = 1;
+  DriverCommandPayload payload = 2;
+}
+
+message DriverCommandPayload {
+  string name = 1;
+  string parametersJson = 2;
+}
+
+enum ValueEncoding {
+  VALUE_ENCODING_UNSPECIFIED = 0;
+  JSON_UTF8 = 1;
+  GZIP_JSON_UTF8 = 2;
+}
+
+message DriverCommandResponse {
+  ValueEncoding value_encoding = 1;
+  bytes value_payload = 2;
+  string sessionId = 3;
+  int32 status = 4;
+  string state = 5;
+}
+
+message Driver {
+  string sessionId = 1;
+  optional string capabilitiesJson = 2;
+  optional string test_id = 3;
+}
+
+message ClientMessagePayload {
+  optional DriverCommandResponse response = 1;
+  optional Driver driver = 2;
+  optional string message = 3;
+  optional ActionRequest action = 4;
+}
+
+message ClientMessage {
+  string id = 1;
+  ClientMessagePayload payload = 3;
+}
+
+message ActionRequest {
+  string name = 1;
+  // JSON object parameters for action execution.
+  // Driver.test_id scopes locator healing data on the server.
+  //
+  // "saveSeleniumLocator" — persist a snapshot for self-healing:
+  //   { "locatorType": "<db value>", "locatorValue": "<value>" }
+  //
+  // "getHealedSeleniumLocator" — resolve a Selenium locator for the current DOM:
+  //   { "locatorType": "<db value>", "locatorValue": "<original value>" }
+  //   Result typedValue jsonValue: { "locatorType": "xpath", "locatorValue": "<path>" }
+  //
+  // "recordSeleniumLocatorMapping" — audit original vs healed locator:
+  //   { "originalLocatorType", "originalLocatorValue", "healedLocatorType", "healedLocatorValue" }
+  //
+  // "resolveLocatorDescriptor":
+  //   { "locatorType": "xpath|id|...", "locatorValue": "<value>" }
+  string parametersJson = 2;
+}
+
+message Result {
+  optional string value = 1 [deprecated = true];
+  oneof typedValue {
+    string elementXpath = 2;
+    string stringValue = 3;
+    bool boolValue = 4;
+    // jsonValue: action-specific JSON (e.g. resolveLocatorDescriptor metadata,
+    // or getHealedSeleniumLocator: { "locatorType", "locatorValue" }).
+    string jsonValue = 5;
+  }
+}
+
+message ServerMessage {
+  string id = 1;
+  oneof message {
+    DriverCommand command = 2;
+    Result result = 3;
+    google.rpc.Status status = 4;
+  }
+}

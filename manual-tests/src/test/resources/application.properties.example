@@ -1,0 +1,42 @@
+testrigor.grpc.uri=localhost
+testrigor.grpc.port=9091
+# optional: force TLS on/off; omit to match port (TLS for 443 only)
+# testrigor.grpc.use-tls=false
+
+# Required for GrpcTest:
+testrigor.apiToken=replace-with-your-api-token
+
+# Required local browser settings:
+webdriver.chrome.driver=C:/path/to/chromedriver.exe
+chrome.binary=C:/path/to/chrome.exe
+
+# Optional comma-separated arguments:
+chrome.args=--remote-allow-origins=*
+
+# Optional ChromeDriver service logging:
+chromedriver.verbose=true
+chromedriver.log.path=target/chromedriver.log
+
+# Optional target page override:
+test.page.url=http://r4d4.info/test-web-app/login-search/index.html
+
+# Optional streaming to test-flow-studio (when enabled, Chrome gets flags to skip
+# the share dialog and reduce permission UI; increase startupTimeoutMs if you need
+# time to click Allow manually).
+# If you see "Access other apps and services on this device" with Allow: that is often
+# a Windows privacy prompt. Allow once, or enable for Chrome in Windows Settings >
+# Privacy & security > App permissions (e.g. "Let desktop apps access other apps").
+streaming.enabled=true
+streaming.mode=auto
+streaming.signaling.baseUrl=http://localhost:8080
+streaming.signaling.path=/webrtc/signaling
+streaming.startupTimeoutMs=30000
+streaming.pollIntervalMs=200
+streaming.video.width=1280
+streaming.video.height=720
+streaming.video.fps=24
+streaming.video.audio=false
+streaming.chromium.extension.enabled=true
+streaming.chromium.extension.id=
+streaming.chromium.extension.required=false
+streaming.chromium.extension.crxPath=
